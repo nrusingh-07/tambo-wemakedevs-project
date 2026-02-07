@@ -1,131 +1,182 @@
-# Tambo Template
+# tambo-wemakedevs-project
 
-This is a starter NextJS app with Tambo hooked up to get your AI app development started quickly.
+This repository contains a **Tambo.ai experiment built during the WeMakeDevs hackathon**.
 
-## Get Started
+The project focuses on **component-level UI rendering controlled by AI through chat interactions**.  
+Instead of building pages or dashboards, the goal is to understand how **Tambo orchestrates real React components** based on user conversation and structured schemas.
 
-1. Run `npm create-tambo@latest my-tambo-app` for a new project
+---
 
-2. `npm install`
+## Project Overview
 
-3. `npx tambo init`
+This project was created to explore **how AI can control UI at the component level**, not just generate text or code.
 
-- or rename `example.env.local` to `.env.local` and add your tambo API key you can get for free [here](https://tambo.co/dashboard).
+Using **Tambo.ai**, the application allows a user to interact through a chat interface, where the AI decides **which React component to render** based on the conversation. The UI is driven by intent, not by routes or navigation.
 
-4. Run `npm run dev` and go to `localhost:3000` to use the app!
+The focus of this project is learning:
+- how Tambo integrates with a real Next.js app
+- how UI components behave when rendered by AI
+- where things break and why
 
-## Customizing
+---
 
-### Change what components tambo can control
+## What Is Implemented
 
-You can see how components are registered with tambo in `src/lib/tambo.ts`:
+This project intentionally keeps the scope small and focused.
 
-```tsx
-export const components: TamboComponent[] = [
-  {
-    name: "Graph",
-    description:
-      "A component that renders various types of charts (bar, line, pie) using Recharts. Supports customizable data visualization with labels, datasets, and styling options.",
-    component: Graph,
-    propsSchema: graphSchema,
-  },
-  // Add more components here
-];
-```
+### 1. UserCard Component
+A simple and flexible UI component that displays basic user information such as:
+- name
+- role
+- short description
 
-You can install the graph component into any project with:
+This component is easy for AI to render and worked reliably during testing.
+
+### 2. Graph Component
+A data visualization component used to render structured numerical data.
+
+This component is stricter and helped reveal real-world challenges such as:
+- schema mismatch
+- incorrect data types from AI output
+- array length inconsistencies
+
+---
+
+## How the Application Works
+
+There is **no traditional navigation flow**.
+
+The entire UI is controlled through chat interaction:
+
+1. User opens the chat interface
+2. User types a message
+3. Tambo.ai interprets the intent
+4. Based on the intent, a registered UI component is rendered
+
+The chat interface acts as the **single control surface** for the UI.
+
+---
+
+## Demo Flow
+
+### Run the project locally
 
 ```bash
-npx tambo add graph
-```
+npm install
+npm run dev
 
-The example Graph component demonstrates several key features:
+Open the application in your browser:
+http://localhost:3000/chat
 
-- Different prop types (strings, arrays, enums, nested objects)
-- Multiple chart types (bar, line, pie)
-- Customizable styling (variants, sizes)
-- Optional configurations (title, legend, colors)
-- Data visualization capabilities
+Try interacting with the chat
 
-Update the `components` array with any component(s) you want tambo to be able to use in a response!
+Example interactions:
 
-You can find more information about the options [here](https://docs.tambo.co/concepts/generative-interfaces/generative-components)
+Asking about a user → renders the UserCard component
 
-### Add tools for tambo to use
+Asking for data visualization → attempts to render the Graph component
 
-Tools are defined with `inputSchema` and `outputSchema`:
+The UI updates dynamically based on conversation.
+Real Issues Faced & Learning
 
-```tsx
-export const tools: TamboTool[] = [
-  {
-    name: "globalPopulation",
-    description:
-      "A tool to get global population trends with optional year range filtering",
-    tool: getGlobalPopulationTrend,
-    inputSchema: z.object({
-      startYear: z.number().optional(),
-      endYear: z.number().optional(),
-    }),
-    outputSchema: z.array(
-      z.object({
-        year: z.number(),
-        population: z.number(),
-        growthRate: z.number(),
-      }),
-    ),
-  },
-];
-```
+This project documents real problems and real learning, not just success.
 
-Find more information about tools [here.](https://docs.tambo.co/concepts/tools)
+Issue 1: UserCard worked, Graph failed
 
-### The Magic of Tambo Requires the TamboProvider
+UserCard rendered without issues
 
-Make sure in the TamboProvider wrapped around your app:
+Graph caused validation or runtime errors
 
-```tsx
-...
-<TamboProvider
-  apiKey={process.env.NEXT_PUBLIC_TAMBO_API_KEY!}
-  components={components} // Array of components to control
-  tools={tools} // Array of tools it can use
->
-  {children}
-</TamboProvider>
-```
+Reason:
 
-In this example we do this in the `Layout.tsx` file, but you can do it anywhere in your app that is a client component.
+Graph expects strict numeric data
 
-### Voice input
+AI responses sometimes returned strings instead of numbers
 
-The template includes a `DictationButton` component using the `useTamboVoice` hook for speech-to-text input.
+Data shape did not always match expectations
 
-### MCP (Model Context Protocol)
+Learning:
 
-The template includes MCP support for connecting to external tools and resources. You can use the MCP hooks from `@tambo-ai/react/mcp`:
+AI-generated data must be validated
 
-- `useTamboMcpPromptList` - List available prompts from MCP servers
-- `useTamboMcpPrompt` - Get a specific prompt
-- `useTamboMcpResourceList` - List available resources
+Data-heavy components need stricter schemas
 
-See `src/components/tambo/mcp-components.tsx` for example usage.
+Not all UI components are equally AI-friendly
 
-### Change where component responses are shown
+Issue 2: Confusion about structure
 
-The components used by tambo are shown alongside the message response from tambo within the chat thread, but you can have the result components show wherever you like by accessing the latest thread message's `renderedComponent` field:
+Initial confusion around pages vs components
 
-```tsx
-const { thread } = useTambo();
-const latestComponent =
-  thread?.messages[thread.messages.length - 1]?.renderedComponent;
+Resolved by focusing only on components
 
-return (
-  <div>
-    {latestComponent && (
-      <div className="my-custom-wrapper">{latestComponent}</div>
-    )}
-  </div>
-);
-```
+Learning:
 
-For more detailed documentation, visit [Tambo's official docs](https://docs.tambo.co).
+Tambo controls components, not application routing
+
+Thinking in components aligns better with Tambo’s design
+
+Issue 3: Git identity confusion
+
+Incorrect commit author due to multiple Git accounts
+
+Fix:
+
+Corrected Git configuration
+
+Cleaned repository setup
+
+Learning:
+
+Commit hygiene matters, especially in hackathons
+
+Tech Stack
+
+Next.js (App Router)
+
+React
+
+TypeScript
+
+Tambo.ai
+
+Tailwind CSS
+
+Zod (for schema validation)
+
+Project Structure (Relevant Parts)
+src/
+├── app/
+│   └── chat/              # Chat-based entry point
+├── components/
+│   ├── ui/
+│   │   └── UserCard.tsx
+│   └── graph.tsx
+├── lib/
+│   └── tambo.ts
+Purpose of This Project
+
+This project is:
+
+a learning experiment
+
+a practical exploration of Tambo.ai
+
+a hackathon-ready prototype
+
+It is not intended to be a full application or production system.
+
+Future Improvements
+
+Normalize AI output before rendering Graph
+
+Improve schema validation and error handling
+
+Add one more AI-controlled UI component
+
+Improve prompt-to-component reliability
+
+Final Note
+
+This repository represents hands-on learning with Tambo.ai, including real challenges, mistakes, and understanding gained during development.
+
+The focus was not on building many features, but on understanding how AI-driven UI actually behaves in practice.
