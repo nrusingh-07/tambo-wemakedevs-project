@@ -1,4 +1,4 @@
-# tambo-wemakedevs-project
+# Tambo-wemakedevs-project
 
 This repository contains a **Tambo.ai experiment built during the WeMakeDevs hackathon**.
 
@@ -46,19 +46,21 @@ This component is stricter and helped expose challenges such as:
 
 ```bash
 npm install
+```
+---
 
 ### Prerequisites
 - Node.js (v18 or later recommended)
 - npm
 - A valid **Tambo.ai API key**
 
-### Environment Setup
+## Environment Setup
 
 Create a `.env.local` file in the project root:
 
 ````env
-NEXT_PUBLIC_TAMBO_API_KEY=your_api_key_here
-
+NEXT_PUBLIC_TAMBO_API_KEY= your_api_key_here
+````
 ---
 
 ## Start Development Server
@@ -67,7 +69,7 @@ npm run dev
 ---
 
 ## Open in Browser
---Once the server is running, open the application in your browser:
+-- Once the server is running, open the application in your browser:
 http://localhost:3000/chat
 
 ---
@@ -137,6 +139,7 @@ src/
 ├── lib/
 │   └── tambo.ts           # Tambo config & component registration
 
+```
 ---
 
 ## How to Add a New Component
