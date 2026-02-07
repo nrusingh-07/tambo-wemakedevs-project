@@ -3,42 +3,70 @@
 This repository contains a **Tambo.ai experiment built during the WeMakeDevs hackathon**.
 
 The project focuses on **component-level UI rendering controlled by AI through chat interactions**.  
-Instead of building pages or dashboards, the goal is to understand how **Tambo orchestrates real React components** based on user conversation and structured schemas.
+Instead of building pages or dashboards, the goal is to understand how **Tambo orchestrates real React components** using structured schemas and user conversations.
 
 ---
 
 ## Project Overview
 
-This project was created to explore **how AI can control UI at the component level**, not just generate text or code.
+This project explores **how AI can control UI at the component level**, not just generate text or code.
 
-Using **Tambo.ai**, the application allows a user to interact through a chat interface, where the AI decides **which React component to render** based on the conversation. The UI is driven by intent, not by routes or navigation.
+Using **Tambo.ai** with a **Next.js** application, users interact through a chat interface.  
+Based on the conversation, the AI decides **which registered React component to render**.
 
-The focus of this project is learning:
-- how Tambo integrates with a real Next.js app
-- how UI components behave when rendered by AI
-- where things break and why
+The UI is driven by **intent**, not by routes or manual navigation.
 
 ---
 
 ## What Is Implemented
 
-This project intentionally keeps the scope small and focused.
+This project intentionally keeps the scope **small and focused**.
 
-### 1. UserCard Component
-A simple and flexible UI component that displays basic user information such as:
+### UserCard Component
+A simple and flexible UI component that displays:
 - name
 - role
 - short description
 
-This component is easy for AI to render and worked reliably during testing.
+This component worked reliably when rendered by AI.
 
-### 2. Graph Component
+### Graph Component
 A data visualization component used to render structured numerical data.
 
-This component is stricter and helped reveal real-world challenges such as:
+This component is stricter and helped expose challenges such as:
 - schema mismatch
-- incorrect data types from AI output
+- incorrect data types
 - array length inconsistencies
+
+---
+
+## How to Run
+
+## Install Dependencies
+npm install
+
+### Prerequisites
+- Node.js (v18 or later recommended)
+- npm
+- A valid **Tambo.ai API key**
+
+### Environment Setup
+
+Create a `.env.local` file in the project root:
+
+```env
+NEXT_PUBLIC_TAMBO_API_KEY=your_api_key_here
+
+---
+
+##Start Development Server
+npm run dev
+
+---
+
+##Open in Browser
+--Once the server is running, open the application in your browser:
+http://localhost:3000/chat
 
 ---
 
@@ -57,126 +85,101 @@ The chat interface acts as the **single control surface** for the UI.
 
 ---
 
-## Demo Flow
 
-### Run the project locally
+## Example Prompts
 
-```bash
-npm install
-npm run dev
+Try these in the chat UI:
 
-Open the application in your browser:
-http://localhost:3000/chat
+- “Show a user profile”
+- “Display a user card with name and role”
+- “Visualize some sample data”
+- “Render a graph using numbers”
 
-Try interacting with the chat
+Based on the prompt, **Tambo.ai attempts to render the appropriate registered component**.
 
-Example interactions:
+---
 
-Asking about a user → renders the UserCard component
+## Issues Faced & Learning
 
-Asking for data visualization → attempts to render the Graph component
+This project intentionally documents **real issues and real learning**, not just successful outcomes.
 
-The UI updates dynamically based on conversation.
-Real Issues Faced & Learning
+### 1. UserCard worked, Graph failed
 
-This project documents real problems and real learning, not just success.
+**What happened**
+- The UserCard component rendered correctly through chat prompts.
+- The Graph component often caused validation or runtime errors.
 
-Issue 1: UserCard worked, Graph failed
+**Why it happened**
+- Graph requires **strict numeric data**.
+- AI responses sometimes returned strings instead of numbers.
+- The data shape did not always match the expected schema.
 
-UserCard rendered without issues
+**What I learned**
+- AI-generated data must be validated before rendering.
+- Data-heavy UI components need stricter schemas.
+- Simpler components are more reliable when controlled by AI.
 
-Graph caused validation or runtime errors
+---
+## Project Structure
 
-Reason:
+The project follows a **simple and component-focused structure**, keeping only the parts relevant to AI-controlled UI rendering.
 
-Graph expects strict numeric data
-
-AI responses sometimes returned strings instead of numbers
-
-Data shape did not always match expectations
-
-Learning:
-
-AI-generated data must be validated
-
-Data-heavy components need stricter schemas
-
-Not all UI components are equally AI-friendly
-
-Issue 2: Confusion about structure
-
-Initial confusion around pages vs components
-
-Resolved by focusing only on components
-
-Learning:
-
-Tambo controls components, not application routing
-
-Thinking in components aligns better with Tambo’s design
-
-Issue 3: Git identity confusion
-
-Incorrect commit author due to multiple Git accounts
-
-Fix:
-
-Corrected Git configuration
-
-Cleaned repository setup
-
-Learning:
-
-Commit hygiene matters, especially in hackathons
-
-Tech Stack
-
-Next.js (App Router)
-
-React
-
-TypeScript
-
-Tambo.ai
-
-Tailwind CSS
-
-Zod (for schema validation)
-
-Project Structure (Relevant Parts)
+```text
 src/
 ├── app/
-│   └── chat/              # Chat-based entry point
+│   └── chat/              # Chat-based entry point for AI interaction
 ├── components/
 │   ├── ui/
-│   │   └── UserCard.tsx
-│   └── graph.tsx
+│   │   └── UserCard.tsx   # AI-rendered user information component
+│   └── graph.tsx          # AI-rendered data visualization component
 ├── lib/
-│   └── tambo.ts
-Purpose of This Project
+│   └── tambo.ts           # Tambo configuration and component registration
 
-This project is:
+## How to Add a New Component
 
-a learning experiment
+To add a new AI-controlled UI component to the project:
 
-a practical exploration of Tambo.ai
+1. **Create a React component**  
+   Build a reusable React component with clearly defined props.
 
-a hackathon-ready prototype
+2. **Define a schema for the component**  
+   Use **Zod** to describe the expected shape and data types of the component props.
 
-It is not intended to be a full application or production system.
+3. **Register the component with Tambo**  
+   Add the component and its schema to `lib/tambo.ts` so Tambo.ai can render it.
 
-Future Improvements
+4. **Run the application**  
+   Start the development server and open the chat interface.
 
-Normalize AI output before rendering Graph
+5. **Test using chat prompts**  
+   Interact with the chat UI and verify that the new component renders correctly based on user prompts.
 
-Improve schema validation and error handling
+This workflow ensures that new components remain **safe, predictable, and compatible with AI-driven rendering**.
 
-Add one more AI-controlled UI component
+## Purpose of the Project
 
-Improve prompt-to-component reliability
+The purpose of this project is to serve as a **learning-focused experiment** exploring how **AI can directly control real UI components** instead of only generating text or code.
 
-Final Note
+This project aims to:
+- Understand how **Tambo.ai integrates with a real Next.js application**
+- Explore **component-level UI rendering** driven by chat interactions
+- Identify limitations and edge cases when AI generates structured UI data
+- Learn best practices for **schema-controlled AI rendering**
 
-This repository represents hands-on learning with Tambo.ai, including real challenges, mistakes, and understanding gained during development.
+The project is designed as a **hackathon prototype and reference implementation**, not as a production-ready system.
 
-The focus was not on building many features, but on understanding how AI-driven UI actually behaves in practice.
+
+
+---
+
+
+##License
+MIT License
+---
+
+### Final step (once)
+
+```bash
+git add README.md
+git commit -m "docs: restructure README for clear project flow"
+git push
