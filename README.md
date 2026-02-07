@@ -179,12 +179,11 @@ The project is designed as a **hackathon prototype and reference implementation*
 
 ---
 
-
-##License
+## License
 MIT License
 ---
 
 ### Final step (once)
 git add README.md
-git commit -m "docs: structure README for clear project flow"
+git commit -m "docs: structure README for clear project flow"g
 git push
