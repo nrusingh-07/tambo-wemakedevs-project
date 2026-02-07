@@ -43,6 +43,8 @@ This component is stricter and helped expose challenges such as:
 ## How to Run
 
 ## Install Dependencies
+
+```bash
 npm install
 
 ### Prerequisites
@@ -54,17 +56,17 @@ npm install
 
 Create a `.env.local` file in the project root:
 
-```env
+````env
 NEXT_PUBLIC_TAMBO_API_KEY=your_api_key_here
 
 ---
 
-##Start Development Server
+## Start Development Server
 npm run dev
 
 ---
 
-##Open in Browser
+## Open in Browser
 --Once the server is running, open the application in your browser:
 http://localhost:3000/chat
 
@@ -122,18 +124,20 @@ This project intentionally documents **real issues and real learning**, not just
 ---
 ## Project Structure
 
-The project follows a **simple and component-focused structure**, keeping only the parts relevant to AI-controlled UI rendering.
+The project follows a **simple and component-focused structure**.
 
 ```text
 src/
 ├── app/
-│   └── chat/              # Chat-based entry point for AI interaction
+│   └── chat/              # Chat-based entry point
 ├── components/
 │   ├── ui/
-│   │   └── UserCard.tsx   # AI-rendered user information component
-│   └── graph.tsx          # AI-rendered data visualization component
+│   │   └── UserCard.tsx
+│   └── graph.tsx
 ├── lib/
-│   └── tambo.ts           # Tambo configuration and component registration
+│   └── tambo.ts           # Tambo config & component registration
+
+---
 
 ## How to Add a New Component
 
