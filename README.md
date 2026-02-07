@@ -178,8 +178,6 @@ MIT License
 ---
 
 ### Final step (once)
-
-```bash
 git add README.md
-git commit -m "docs: restructure README for clear project flow"
+git commit -m "docs: structure README for clear project flow"
 git push
