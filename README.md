@@ -184,6 +184,6 @@ MIT License
 ---
 
 ### Final step (once)
-git add README.md
-git commit -m "docs: structure README for clear project flow"g
-git push
+- git add README.md
+- git commit -m "docs: structure README for clear project flow"g
+- git push
